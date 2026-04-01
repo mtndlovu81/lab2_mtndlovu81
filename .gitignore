@@ -16,3 +16,6 @@ Thumbs.db
 # Editor
 .vscode/
 *.swp
+
+# Markdown
+PROJECTS.md
