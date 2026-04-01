@@ -53,7 +53,6 @@ def clean_data(tweets):
 def find_viral_tweet(tweets):
     """
     QUEST 2: Loop through the list to find the tweet with the highest 'Likes'.
-    Do not use the max() function.
     """
     if len(tweets) == 0:
         print("Quest 2 - Viral Post: No tweets to search.\n")
@@ -76,7 +75,6 @@ def custom_sort_by_likes(tweets, top_n=10):
     QUEST 3: Partial Selection Sort — finds the top_n tweets by Likes
     without sorting the entire list. Makes exactly top_n passes, each
     time extracting the tweet with the highest Likes from the remaining pool.
-    NO .sort(), sorted(), or max() used.
     """
     remaining = []
     for tweet in tweets:
