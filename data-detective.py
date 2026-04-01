@@ -2,6 +2,25 @@ import csv
 import sys
 import os
 
+def validcount(value):
+    """
+    Validate and clean a count field (likes, retweets, etc.).
+    Returns a tuple: (cleaned_value, was_fixed)
+    - cleaned_value: "0" if invalid/empty/negative, otherwise the original valid value
+    - was_fixed: True if the value was modified, False otherwise
+    """
+    value = value.strip()
+
+    if value == "":
+        return "0", True
+
+    try:
+        if int(value) < 0:
+            return "0", True
+        return value, False
+    except ValueError:
+        return "0", True
+
 def load_raw_data(filename):
     """
     Loads the CSV file into a list of dictionaries exactly as it is (messy).
@@ -35,32 +54,14 @@ def clean_data(tweets):
             continue
 
         # Validate and fix Likes
-        likes_val = tweet.get("Likes", "").strip()
-        if likes_val == "":
-            tweet["Likes"] = "0"
+        tweet["Likes"], likes_fixed = validcount(tweet.get("Likes", ""))
+        if likes_fixed:
             fixed += 1
-        else:
-            try:
-                if int(likes_val) < 0:
-                    tweet["Likes"] = "0"
-                    fixed += 1
-            except ValueError:
-                tweet["Likes"] = "0"
-                fixed += 1
 
         # Validate and fix Retweets
-        retweets_val = tweet.get("Retweets", "").strip()
-        if retweets_val == "":
-            tweet["Retweets"] = "0"
+        tweet["Retweets"], retweets_fixed = validcount(tweet.get("Retweets", ""))
+        if retweets_fixed:
             fixed += 1
-        else:
-            try:
-                if int(retweets_val) < 0:
-                    tweet["Retweets"] = "0"
-                    fixed += 1
-            except ValueError:
-                tweet["Retweets"] = "0"
-                fixed += 1
 
         clean_tweets.append(tweet)
 
