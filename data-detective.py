@@ -71,12 +71,34 @@ def find_viral_tweet(tweets):
 
     return viral
 
-def custom_sort_by_likes(tweets):
+def custom_sort_by_likes(tweets, top_n=10):
     """
-    QUEST 3: Implement Bubble Sort or Selection Sort to sort the list 
-    by 'Likes' in descending order. NO .sort() allowed!
+    QUEST 3: Partial Selection Sort — finds the top_n tweets by Likes
+    without sorting the entire list. Makes exactly top_n passes, each
+    time extracting the tweet with the highest Likes from the remaining pool.
+    NO .sort(), sorted(), or max() used.
     """
-    pass
+    remaining = []
+    for tweet in tweets:
+        remaining.append(tweet)
+
+    top_tweets = []
+    for _ in range(top_n):
+        if len(remaining) == 0:
+            break
+        highest_idx = 0
+        for i in range(len(remaining)):
+            if int(remaining[i]["Likes"]) > int(remaining[highest_idx]["Likes"]):
+                highest_idx = i
+        top_tweets.append(remaining[highest_idx])
+        remaining.pop(highest_idx)
+
+    print(f"Quest 3 - Top {top_n} Most Liked Tweets:")
+    for rank, tweet in enumerate(top_tweets, start=1):
+        print(f"  {rank}. [{tweet['Likes']} likes] @{tweet['Username']}: {tweet['Text'][:70]}...")
+    print()
+
+    return top_tweets
 
 def search_tweets(tweets, keyword):
     """
@@ -94,3 +116,6 @@ if __name__ == "__main__":
 
     # Quest 2
     find_viral_tweet(clean_dataset)
+
+    # Quest 3
+    custom_sort_by_likes(clean_dataset)
