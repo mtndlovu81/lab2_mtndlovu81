@@ -21,7 +21,8 @@ def load_raw_data(filename):
 def clean_data(tweets):
     """
     QUEST 1: Handle missing fields.
-    Check for missing text, and replace empty likes/retweets with 0.
+    Check for missing text, and replace empty/invalid likes/retweets with 0.
+    Validates that likes/retweets are non-negative integers.
     Return a clean list of tweets.
     """
     clean_tweets = []
@@ -33,19 +34,39 @@ def clean_data(tweets):
             removed += 1
             continue
 
-        if tweet.get("Likes", "").strip() == "":
+        # Validate and fix Likes
+        likes_val = tweet.get("Likes", "").strip()
+        if likes_val == "":
             tweet["Likes"] = "0"
             fixed += 1
+        else:
+            try:
+                if int(likes_val) < 0:
+                    tweet["Likes"] = "0"
+                    fixed += 1
+            except ValueError:
+                tweet["Likes"] = "0"
+                fixed += 1
 
-        if tweet.get("Retweets", "").strip() == "":
+        # Validate and fix Retweets
+        retweets_val = tweet.get("Retweets", "").strip()
+        if retweets_val == "":
             tweet["Retweets"] = "0"
             fixed += 1
+        else:
+            try:
+                if int(retweets_val) < 0:
+                    tweet["Retweets"] = "0"
+                    fixed += 1
+            except ValueError:
+                tweet["Retweets"] = "0"
+                fixed += 1
 
         clean_tweets.append(tweet)
 
     print(f"Quest 1 - Data Auditor:")
     print(f"  Rows removed (missing Text): {removed}")
-    print(f"  Fields fixed (missing Likes/Retweets): {fixed}")
+    print(f"  Fields fixed (missing/invalid Likes/Retweets): {fixed}")
     print(f"  Clean dataset size: {len(clean_tweets)}\n")
 
     return clean_tweets
