@@ -49,4 +49,4 @@ Prints the **Top 5 Most Active Users** (by tweet count) from the dataset.
 
 ## How the Custom Sorting Algorithm Works
 
-Quest 3 uses **Bubble Sort**: it repeatedly steps through the list, comparing each adjacent pair of tweets by their `Likes` count and swapping them if they are in the wrong order (lower before higher). After each full pass through the list, the tweet with the current lowest Likes among the unsorted portion "bubbles" to the end, and the process repeats until the entire list is sorted from highest to lowest Likes.
+Quest 3 uses **Partial Selection Sort**: it repeatedly finds the tweet with the highest `Likes` count among the unsorted portion of the list and moves it to the front of that portion. This process repeats, shrinking the unsorted region by one each pass, until the top 10 tweets are sorted from highest to lowest Likes.
