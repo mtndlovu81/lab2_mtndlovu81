@@ -24,7 +24,31 @@ def clean_data(tweets):
     Check for missing text, and replace empty likes/retweets with 0.
     Return a clean list of tweets.
     """
-    pass
+    clean_tweets = []
+    removed = 0
+    fixed = 0
+
+    for tweet in tweets:
+        if not tweet.get("Text", "").strip():
+            removed += 1
+            continue
+
+        if tweet.get("Likes", "").strip() == "":
+            tweet["Likes"] = "0"
+            fixed += 1
+
+        if tweet.get("Retweets", "").strip() == "":
+            tweet["Retweets"] = "0"
+            fixed += 1
+
+        clean_tweets.append(tweet)
+
+    print(f"Quest 1 - Data Auditor:")
+    print(f"  Rows removed (missing Text): {removed}")
+    print(f"  Fields fixed (missing Likes/Retweets): {fixed}")
+    print(f"  Clean dataset size: {len(clean_tweets)}\n")
+
+    return clean_tweets
 
 def find_viral_tweet(tweets):
     """
@@ -51,5 +75,5 @@ if __name__ == "__main__":
     dataset = load_raw_data("twitter_dataset.csv")
     print(f"Loaded {len(dataset)} raw tweets.\n")
     
-    # Call your functions here to complete the quests!
-    # Example: clean_dataset = clean_data(dataset)
+    # Quest 1
+    clean_dataset = clean_data(dataset)
